@@ -8,7 +8,7 @@ function ArrayEqual(arrayOne, arrayTwo){
         return false;
     }
     for(var i = 0; i < arrayOne.length; i++){
-        if(arrayOne[i] != arrayTwo){
+        if(arrayOne[i] != arrayTwo[i]){
             return false;
         }
     }
@@ -59,14 +59,22 @@ class Grid extends React.Component{
 
     render(){
         const GameGrid = Array(7).fill(Array(7).fill(null));
-    
+        
+
         return(
             <div className="xGrid">
                 {GameGrid.map((gridY, yIndex) => {
                     return(
                         <div className="yGrid">
                             {gridY.map((gridX, xIndex) =>{
-                                return( <Title X = {xIndex} Y = {yIndex}/>);
+                                return( 
+                                <Title 
+                                X = {xIndex}
+                                Y = {yIndex} 
+                                snake={this.props.snake}
+                                food = {this.props.food}
+                                />
+                                );
                             })}
                         </div>
                     )
@@ -83,7 +91,7 @@ class Title extends React.Component{
    
 
     render(){
-        let isFood = ArrayEqual(this.props.snake, [this.props.X, this.props.Y]) ? "food" : "";
+        let isFood = ArrayEqual(this.props.food, [this.props.X, this.props.Y]) ? "food" : "";
 
         let isSnake = ArrayEqual(this.props.snake, [this.props.X, this.props.Y]) ? "snake" : "";
         let className = `tile ${isSnake} ${isFood}`  
@@ -91,6 +99,7 @@ class Title extends React.Component{
         return(
             <div className="Title">
                 ({`X ${this.props.X} | Y ${this.props.Y}`}){isSnake ?  "Snake" : ""}
+                {isFood ? "Food" : ""}
             </div>
         );
     }
