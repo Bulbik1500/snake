@@ -1,0 +1,22 @@
+.grid {
+    display: table;
+  }
+  
+  .xGrid{
+    display: table-row;
+  }
+  
+  .Title {
+    display: table-cell;
+    background-color: #999;
+    padding: 10px;
+    border: 1px solid white;
+  }
+  
+  .tile.snake {
+    background-color: #333;
+  }
+  
+  .tile.food {
+    background-color: #ff0000;
+  }
