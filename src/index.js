@@ -23,7 +23,10 @@ class Game extends React.Component{
             gridSize:[7, 7],
             snake:[],
             food:[],
+            head:[],
+            direction: "right",
         }
+         this.moveSnake = this.moveSnake.bind(this);
     }
 
     getMiddleGrid(gridSize){
@@ -34,19 +37,43 @@ class Game extends React.Component{
         let yMiddle = parseInt(ySize / 2);
         
         return [xMiddle, yMiddle];
+    }    
+    moveSnake(){
+        let newSnake = [];
+        let direction = this.state.direction;
+        switch(direction){
+            case "up":
+                newSnake = [this.state.snake[0], this.state.snake[1] - 1];
+                break;
+            case "down" :
+                newSnake = [this.state.snake[0],this.state.snake[1] + 1];
+                break;
+            case "right":
+                newSnake = [this.state.snake[0] + 1, this.state.snake[1]];
+                break;
+            case "left":
+                newSnake = [this.state.snake[0] - 1, this.state.snake[1]];
+                break;
         }
+        this.setState({snake: newSnake});            
+    }
+
 
     componentDidMount(){
         let middleCoordinates = this.getMiddleGrid(this.state.gridSize);
         this.setState({snake: middleCoordinates, food: [5, 3]});
+        setInterval(() => this.moveSnake(), 500);
     }
 
     render(){
         return(
+            <>
             <Grid 
                 size={this.state.gridSize}
                 snake={this.state.snake}
                 food={this.state.food}/>
+            <Gamebutton moveSnake={this.moveSnake}/>   
+            </>
         );
     }
     
@@ -71,7 +98,7 @@ class Grid extends React.Component{
                                 <Title 
                                 X = {xIndex}
                                 Y = {yIndex} 
-                                snake={this.props.snake}
+                                snake = {this.props.snake}
                                 food = {this.props.food}
                                 />
                                 );
@@ -94,17 +121,32 @@ class Title extends React.Component{
         let isFood = ArrayEqual(this.props.food, [this.props.X, this.props.Y]) ? "food" : "";
 
         let isSnake = ArrayEqual(this.props.snake, [this.props.X, this.props.Y]) ? "snake" : "";
-        let className = `tile ${isSnake} ${isFood}`  
+        let className = `Tile ${isSnake} ${isFood}`  
 
         return(
             <div className="Title">
-                ({`X ${this.props.X} | Y ${this.props.Y}`}){isSnake ?  "Snake" : ""}
+                ({` ${this.props.X} | ${this.props.Y}`}) {isSnake ?  "Snake" : ""}
                 {isFood ? "Food" : ""}
             </div>
         );
     }
+ 
 
-
+}
+class Gamebutton extends React.Component{
+    constructor(props){
+        super(props);
+    }
+    render(){
+        return(
+            <>
+            <button id="up" onClick={()=> this.props.moveSnake("up")}> UP!</button>
+            <button id="down" onClick={() => this.props.moveSnake("down")}> DOWN!</button>
+            <button id="left" onClick={() => this.props.moveSnake("left")}> LEFT!</button>
+            <button id="right" onClick={() => this.props.moveSnake("right")}>RIGHT!</button>
+            </>
+        )
+    }
 }
 
 ReactDOM.render(<Game />, document.getElementById("root"));

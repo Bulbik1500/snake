@@ -8,15 +8,17 @@
   
   .Title {
     display: table-cell;
-    background-color: #999;
+    height: 60px;
+    width: 60px;
+    background-color: green;
     padding: 10px;
     border: 1px solid white;
   }
   
-  .tile.snake {
+  .Tile.snake {
     background-color: #333;
   }
   
-  .tile.food {
+  .Tile.food {
     background-color: #ff0000;
   }
